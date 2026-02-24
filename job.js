@@ -82,13 +82,12 @@ const allJobData = [
     }
 ];
 
-let jobData = [...allJobData];
-let currentSelectedTab = 'all';
-
+// id diye element niye asa
 const getElement = (id) => {
     const element = document.getElementById(id);
     return element;
 }
+
 
 const jobCard = (job) => {
     const card = document.createElement('div');
@@ -108,20 +107,23 @@ const jobCard = (job) => {
 
     card.innerHTML = `
          <div class="flex flex-col gap-5 p-6">
+            <!-- job card top section -->
             <div class="flex gap-4 items-center w-full">
               <div class="flex-1 flex flex-col gap-1">
                 <h3 class="font-semibold text-lg text-[#002c5c]">${job.companyName}</h3>
                 <p class="font-normal text-base text-[#64748b]">${job.position}</p>
               </div>
-              <button class="delete-btn w-8 h-8">
+              <button onclick="deleteJobCard(${job.id})" class="delete-btn w-8 h-8">
                 <img src="assets/delete.png" alt="Delete" class="w-full h-full object-contain">
               </button>
             </div>
 
+            <!-- job details -->  
             <p class="font-normal text-sm text-[#64748b]">
                 ${job.location}  •  ${job.type}  •  ${job.salary}
             </p>
               
+            <!-- status ar description -->
             <div class="flex flex-col gap-2">
               <div class="status-badge px-3 py-2 rounded w-fit">
                 <p class="font-medium text-sm uppercase">${statusText}</p>
@@ -129,6 +131,7 @@ const jobCard = (job) => {
               <p class="font-normal text-sm text-[#323b49]">${job.description}</p>
             </div>
 
+            <!-- action buttons -->
             <div class="flex gap-2">
               <button onclick="changeStatus(${job.id}, 'interview')" class="btn-interview px-3 py-2 rounded font-semibold text-sm uppercase ${interviewClass}">Interview</button>
               <button onclick="changeStatus(${job.id}, 'rejected')" class="btn-rejected px-3 py-2 rounded font-semibold text-sm uppercase ${rejectedClass}">Rejected</button>
@@ -137,15 +140,18 @@ const jobCard = (job) => {
       `;
 
     return card;
-};
+};const jobCardContainer = getElement('jobs-container');
 
-const jobCardContainer = getElement('jobs-container');
+let currentSelectedTab = 'all';
+let jobData = [...allJobData];
 const tabButtons = document.querySelectorAll('.tab-button')
 const totalJobsEl = getElement('total-count')
 const totalInterviewEl = getElement('interview-count')
 const totalRejectedEl = getElement('rejected-count')
 const availableJobCount = getElement('jobs-count')
 
+
+// all jobs render
 const renderJobCards = () => {
     const jobDataFiltered = currentSelectedTab === 'all' ? jobData : jobData.filter((j) => j.status === currentSelectedTab);
     
@@ -161,6 +167,7 @@ const renderJobCards = () => {
 
     availableJobCount.innerText = `${jobDataFiltered.length} jobs`
 
+    // no job 
     if(jobDataFiltered.length === 0) {
         const emptyDiv = document.createElement('div');
         emptyDiv.className = 'bg-white rounded-lg card-border w-full h-[400px] flex flex-col items-center justify-center p-10 gap-5';
@@ -191,6 +198,7 @@ const renderJobCards = () => {
     })
 };
 
+
 tabButtons.forEach(button =>{
     button.addEventListener('click', () =>{
         currentSelectedTab = button.getAttribute('data-tab')
@@ -206,6 +214,11 @@ const changeStatus=(id, newStatus) =>{
         job.status = newStatus;
         renderJobCards();
     }
+};
+
+const deleteJobCard = (id) => {
+    jobData = jobData.filter((job) => job.id !== id);
+    renderJobCards();
 };
 
 renderJobCards();
