@@ -82,14 +82,14 @@ const allJobData = [
     }
 ];
 
-// id diye element niye asa
+// id diye element niye asha
 const getElement = (id) => {
     const element = document.getElementById(id);
     return element;
 }
 
 
-const jobCard = (job) => {
+const jobCard = (job) =>{
     const card = document.createElement('div');
     card.className = 'bg-white rounded-lg card-border w-full';
     card.setAttribute('job-id', job.id)
@@ -152,7 +152,7 @@ const availableJobCount = getElement('jobs-count')
 
 
 // all jobs render
-const renderJobCards = () => {
+const renderJobCards = () =>{
     const jobDataFiltered = currentSelectedTab === 'all' ? jobData : jobData.filter((j) => j.status === currentSelectedTab);
     
     jobCardContainer.innerHTML = '';
@@ -167,7 +167,7 @@ const renderJobCards = () => {
 
     availableJobCount.innerText = `${jobDataFiltered.length} jobs`
 
-    // no job 
+    //when no job
     if(jobDataFiltered.length === 0) {
         const emptyDiv = document.createElement('div');
         emptyDiv.className = 'bg-white rounded-lg card-border w-full h-[400px] flex flex-col items-center justify-center p-10 gap-5';
@@ -182,7 +182,7 @@ const renderJobCards = () => {
         
         jobCardContainer.appendChild(emptyDiv);
     } else {
-        jobDataFiltered.forEach((job) => {
+        jobDataFiltered.forEach((job) =>{
             jobCardContainer.appendChild(jobCard(job));
         });
     }
