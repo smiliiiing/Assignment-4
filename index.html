@@ -38,6 +38,28 @@
 
         <div class="w-full h-[1px] bg-[#E6E7E9]"></div>
 
+        <div class="flex flex-col gap-6 w-full">
+            <div class="flex flex-col md:flex-row gap-4 items-start md:items-center w-full">
+                <h2 class="flex-1 font-semibold text-lg md:text-xl text-[#002c5c]">Available Jobs</h2>
+                <p class="font-medium text-sm md:text-base text-[#64748b]" id="jobs-count">0 jobs</p>
+            </div>
+
+            <div class="flex gap-2 flex-wrap">
+                <button class="tab-button px-3 py-2 rounded min-w-[80px] text-xs font-semibold bg-blue-500 text-white" data-tab="all">
+                    All
+                </button>
+                <button class="tab-button px-3 py-2 rounded min-w-[80px] text-xs font-semibold bg-white text-gray-500 border" data-tab="interview">
+                    Interview
+                </button>
+                <button class="tab-button px-3 py-2 rounded min-w-[80px] text-xs font-semibold bg-white text-gray-500 border" data-tab="rejected">
+                    Rejected
+                </button>
+            </div>
+
+            <div id="jobs-container" class="flex flex-col gap-4 w-full">
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
