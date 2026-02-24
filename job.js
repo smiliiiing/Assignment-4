@@ -85,17 +85,23 @@ const allJobData = [
 let jobData = [...allJobData];
 let currentSelectedTab = 'all';
 
-// get element helper
 const getElement = (id) => {
     const element = document.getElementById(id);
     return element;
 }
 
-// create job card
 const jobCard = (job) => {
     const card = document.createElement('div');
     card.className = 'bg-white rounded-lg card-border w-full';
     card.setAttribute('job-id', job.id)
+
+    const interviewBtnClass = 'status-interview'
+    const rejectedBtnClass = 'status-rejected'
+
+    const interviewClass = job.status === 'all' ? '' : job.status === 'interview' 
+                        ? interviewBtnClass : ''
+    const rejectedClass = job.status === 'all' ? '' : job.status === 'rejected' 
+                        ? rejectedBtnClass : ''
 
     const statusText = job.status === 'all' ? 'Not Applied' 
                            : job.status === 'interview' ? 'Interview' : 'Rejected'
@@ -124,8 +130,8 @@ const jobCard = (job) => {
             </div>
 
             <div class="flex gap-2">
-              <button class="btn-interview px-3 py-2 rounded font-semibold text-sm uppercase">Interview</button>
-              <button class="btn-rejected px-3 py-2 rounded font-semibold text-sm uppercase">Rejected</button>
+              <button onclick="changeStatus(${job.id}, 'interview')" class="btn-interview px-3 py-2 rounded font-semibold text-sm uppercase ${interviewClass}">Interview</button>
+              <button onclick="changeStatus(${job.id}, 'rejected')" class="btn-rejected px-3 py-2 rounded font-semibold text-sm uppercase ${rejectedClass}">Rejected</button>
             </div>
          </div>
       `;
@@ -134,22 +140,72 @@ const jobCard = (job) => {
 };
 
 const jobCardContainer = getElement('jobs-container');
-const totalJobsEl = getElement('total-count');
-const totalInterviewEl = getElement('interview-count');
-const totalRejectedEl = getElement('rejected-count');
-const availableJobCount = getElement('jobs-count');
+const tabButtons = document.querySelectorAll('.tab-button')
+const totalJobsEl = getElement('total-count')
+const totalInterviewEl = getElement('interview-count')
+const totalRejectedEl = getElement('rejected-count')
+const availableJobCount = getElement('jobs-count')
 
-// render all jobs
 const renderJobCards = () => {
+    const jobDataFiltered = currentSelectedTab === 'all' ? jobData : jobData.filter((j) => j.status === currentSelectedTab);
+    
     jobCardContainer.innerHTML = '';
 
+    const totalInterview = jobData.filter(j => j.status === 'interview').length
+    const totalRejected = jobData.filter(j => j.status === 'rejected').length
     const totalJobs = jobData.length;
-    totalJobsEl.innerText = totalJobs;
-    availableJobCount.innerText = `${totalJobs} jobs`;
 
-    jobData.forEach((job) => {
-        jobCardContainer.appendChild(jobCard(job));
-    });
+    totalJobsEl.innerText = totalJobs
+    totalInterviewEl.innerText = totalInterview
+    totalRejectedEl.innerText = totalRejected
+
+    availableJobCount.innerText = `${jobDataFiltered.length} jobs`
+
+    if(jobDataFiltered.length === 0) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'bg-white rounded-lg card-border w-full h-[400px] flex flex-col items-center justify-center p-10 gap-5';
+        
+        emptyDiv.innerHTML = `
+            <img src="assets/jobs.png" alt="No jobs" class="w-[100px] h-[100px] object-contain">
+            <div class="flex flex-col gap-1 text-center">
+                <h3 class="font-semibold text-2xl text-[#002c5c]">No jobs available</h3>
+                <p class="font-normal text-base text-[#64748b]">Check back soon for new job opportunities</p>
+            </div>
+        `;
+        
+        jobCardContainer.appendChild(emptyDiv);
+    } else {
+        jobDataFiltered.forEach((job) => {
+            jobCardContainer.appendChild(jobCard(job));
+        });
+    }
+
+    tabButtons.forEach(button => {
+        button.classList.remove('tab-active');
+        button.classList.add('tab-inactive');
+
+        if(button.getAttribute('data-tab') === currentSelectedTab){
+            button.classList.remove('tab-inactive');
+            button.classList.add('tab-active')
+        }
+    })
+};
+
+tabButtons.forEach(button =>{
+    button.addEventListener('click', () =>{
+        currentSelectedTab = button.getAttribute('data-tab')
+        renderJobCards()
+    })
+})
+
+const changeStatus=(id, newStatus) =>{
+    if (!newStatus) return;
+    const job = jobData.find((j) =>j.id === id);
+
+    if (job){
+        job.status = newStatus;
+        renderJobCards();
+    }
 };
 
 renderJobCards();
