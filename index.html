@@ -5,6 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Application Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card-border {
+            border: 1px solid #f1f2f4;
+        }
+
+        .status-badge {
+            background-color: #eef4ff;
+            color: #002c5c;
+        }
+
+        .status-interview {
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .status-rejected {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .btn-interview {
+            border: 1px solid #10b981;
+            color: #10b981;
+        }
+
+        .btn-interview:hover {
+            opacity: 0.8;
+        }
+
+        .btn-rejected {
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .btn-rejected:hover {
+            opacity: 0.8;
+        }
+
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+
+        .tab-active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .tab-inactive {
+            background-color: white;
+            color: #64748b;
+            border: 1px solid #f1f2f4;
+        }
+
+        .delete-btn {
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .delete-btn:hover {
+            opacity: 0.7;
+        }
+    </style>
 </head>
 <body class="bg-[#f8fafc] min-h-screen">
     <div class="flex flex-col gap-[30px] px-5 md:px-[60px] lg:px-[245px] py-10 md:py-[60px] w-full">
@@ -13,21 +79,21 @@
             <h1 class="font-bold text-2xl md:text-[32px] leading-8 text-[#002c5c]">Job Application Tracker</h1>
             
             <div class="flex flex-col md:flex-row gap-4 w-full">
-                <div class="bg-white flex-1 rounded-lg border border-gray-200 p-5">
+                <div class="bg-white flex-1 rounded-lg card-border p-5">
                     <div class="flex flex-col gap-2">
                         <p class="font-medium text-sm text-[#323b49]">Total</p>
                         <p class="font-bold text-2xl text-[#002c5c]" id="total-count">0</p>
                     </div>
                 </div>
                 
-                <div class="bg-white flex-1 rounded-lg border border-gray-200 p-5">
+                <div class="bg-white flex-1 rounded-lg card-border p-5">
                     <div class="flex flex-col gap-2">
                         <p class="font-medium text-sm text-[#323b49]">Interview</p>
                         <p class="font-bold text-2xl text-[#10b981]" id="interview-count">0</p>
                     </div>
                 </div>
                 
-                <div class="bg-white flex-1 rounded-lg border border-gray-200 p-5">
+                <div class="bg-white flex-1 rounded-lg card-border p-5">
                     <div class="flex flex-col gap-2">
                         <p class="font-medium text-sm text-[#323b49]">Rejected</p>
                         <p class="font-bold text-2xl text-[#ef4444]" id="rejected-count">0</p>
@@ -45,13 +111,13 @@
             </div>
 
             <div class="flex gap-2 flex-wrap">
-                <button class="tab-button px-3 py-2 rounded min-w-[80px] text-xs font-semibold bg-blue-500 text-white" data-tab="all">
+                <button class="tab-button tab-active px-3 py-2 rounded min-w-[80px] text-xs font-semibold" data-tab="all">
                     All
                 </button>
-                <button class="tab-button px-3 py-2 rounded min-w-[80px] text-xs font-semibold bg-white text-gray-500 border" data-tab="interview">
+                <button class="tab-button tab-inactive px-3 py-2 rounded min-w-[80px] text-xs font-semibold" data-tab="interview">
                     Interview
                 </button>
-                <button class="tab-button px-3 py-2 rounded min-w-[80px] text-xs font-semibold bg-white text-gray-500 border" data-tab="rejected">
+                <button class="tab-button tab-inactive px-3 py-2 rounded min-w-[80px] text-xs font-semibold" data-tab="rejected">
                     Rejected
                 </button>
             </div>
@@ -61,5 +127,7 @@
         </div>
 
     </div>
+
+    <script src="job.js"></script>
 </body>
 </html>
