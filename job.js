@@ -84,3 +84,72 @@ const allJobData = [
 
 let jobData = [...allJobData];
 let currentSelectedTab = 'all';
+
+// get element helper
+const getElement = (id) => {
+    const element = document.getElementById(id);
+    return element;
+}
+
+// create job card
+const jobCard = (job) => {
+    const card = document.createElement('div');
+    card.className = 'bg-white rounded-lg card-border w-full';
+    card.setAttribute('job-id', job.id)
+
+    const statusText = job.status === 'all' ? 'Not Applied' 
+                           : job.status === 'interview' ? 'Interview' : 'Rejected'
+
+    card.innerHTML = `
+         <div class="flex flex-col gap-5 p-6">
+            <div class="flex gap-4 items-center w-full">
+              <div class="flex-1 flex flex-col gap-1">
+                <h3 class="font-semibold text-lg text-[#002c5c]">${job.companyName}</h3>
+                <p class="font-normal text-base text-[#64748b]">${job.position}</p>
+              </div>
+              <button class="delete-btn w-8 h-8">
+                <img src="assets/delete.png" alt="Delete" class="w-full h-full object-contain">
+              </button>
+            </div>
+
+            <p class="font-normal text-sm text-[#64748b]">
+                ${job.location}  •  ${job.type}  •  ${job.salary}
+            </p>
+              
+            <div class="flex flex-col gap-2">
+              <div class="status-badge px-3 py-2 rounded w-fit">
+                <p class="font-medium text-sm uppercase">${statusText}</p>
+              </div>
+              <p class="font-normal text-sm text-[#323b49]">${job.description}</p>
+            </div>
+
+            <div class="flex gap-2">
+              <button class="btn-interview px-3 py-2 rounded font-semibold text-sm uppercase">Interview</button>
+              <button class="btn-rejected px-3 py-2 rounded font-semibold text-sm uppercase">Rejected</button>
+            </div>
+         </div>
+      `;
+
+    return card;
+};
+
+const jobCardContainer = getElement('jobs-container');
+const totalJobsEl = getElement('total-count');
+const totalInterviewEl = getElement('interview-count');
+const totalRejectedEl = getElement('rejected-count');
+const availableJobCount = getElement('jobs-count');
+
+// render all jobs
+const renderJobCards = () => {
+    jobCardContainer.innerHTML = '';
+
+    const totalJobs = jobData.length;
+    totalJobsEl.innerText = totalJobs;
+    availableJobCount.innerText = `${totalJobs} jobs`;
+
+    jobData.forEach((job) => {
+        jobCardContainer.appendChild(jobCard(job));
+    });
+};
+
+renderJobCards();
